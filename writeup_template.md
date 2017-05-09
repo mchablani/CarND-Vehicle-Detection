@@ -35,11 +35,12 @@ You're reading it!
 
 #### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The code for this step is contained in get_hog_features() and extract_features_image() of the file called `features.py`).  
+The code for this step is contained in `get_hog_features()` and `extract_features_image()` of the file called `features.py`).  
 
 I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
 
-![test][image0] [image1]
+![test][image0] 
+![test][image1]
 
 I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
 
@@ -54,7 +55,7 @@ Here is vizualization for car and not car image:
 
 ####2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and...
+I tried various combinations of parameters and color spaces (most parameters were default form the lesson material)  fo all the color spaces `YCrCb` gave most validation i.e. test accuracy in classfier training.
 
 ####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
