@@ -50,8 +50,8 @@ Here is an example using the `YCrCb` color space and HOG parameters of
 `cell_per_block=2`
 
 Here is vizualization for car and not car image:
-![hog car][image3]
-![hog not car][image4]
+![hog car][image2]
+![hog not car][image3]
 
 ####2. Explain how you settled on your final choice of HOG parameters.
 
