@@ -15,8 +15,9 @@ The goals / steps of this project are the following:
 [image2]: ./output_images/car_example_hog.jpg
 [image3]: ./output_images/not_car_example_hog.jpg
 
-[image4]: ./examples/sliding_window.jpg
-[image5]: ./examples/bboxes_and_heat.png
+[image4]: ./output_images/sample_pipeline_output_testimages_1.jpg
+[image5]: ./output_images/sample_pipeline_output_testimages_2.jpg
+
 [image6]: ./examples/labels_map.png
 [image7]: ./examples/output_bboxes.png
 [video1]: ./project_video.mp4
@@ -70,15 +71,36 @@ Train Accuracy of SVC =  1.0`
 
 ####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
+All the code for sliding window is in `pipeline.py`
+`
+    # Large window over bottom half of image
+    w = slide_window(img, x_start_stop=[None, None], 
+                     y_start_stop=[np.int(image_length*0.5), image_length], 
+                     xy_window=(256, 256), xy_overlap=(0.75, 0.75))
+    windows.append(w)
+#    print("l:", len(w))
 
-![alt text][image3]
+    # Medium window over bottom half of image
+    w = slide_window(img, x_start_stop=[None, None], 
+                     y_start_stop=[np.int(image_length*0.5), np.int(image_length*0.85)], 
+                     xy_window=(128, 128), xy_overlap=(0.75, 0.75))
+    windows.append(w)
+#    print("m:", len(w))
+
+    # Small window over bottom half of image
+    w = slide_window(img, x_start_stop=[None, None], 
+                     y_start_stop=[np.int(image_length*0.5), np.int(image_length*0.70)], 
+                     xy_window=(64, 64), xy_overlap=(0.75, 0.75))
+    windows.append(w)
+`
+
+![pipeline][image4]
+![pipeline][image5]
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+See pipeline images above. It shows windows for vehicles based on classifier out before and after filtering for heat maps.
 
-![alt text][image4]
 ---
 
 ### Video Implementation
