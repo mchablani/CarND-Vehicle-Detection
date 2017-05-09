@@ -57,11 +57,16 @@ Here is vizualization for car and not car image:
 
 I tried various combinations of parameters and color spaces (most parameters were default form the lesson material)  fo all the color spaces `YCrCb` gave most validation i.e. test accuracy in classfier training.
 
-####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+#### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+The code for this step is contained in cell 3 of notebook `VehicleDetection.ipynb`).  
+I trained a linear SVM using HOG features for each channel of `YCrCb` color space image. Also used the histogram features.
+Here is the summary of training:
+`32.5 Seconds to train SVC...
+Test Accuracy of SVC =  0.9817
+Train Accuracy of SVC =  1.0`
 
-###Sliding Window Search
+### Sliding Window Search
 
 ####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
