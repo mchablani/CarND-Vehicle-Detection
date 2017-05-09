@@ -4,6 +4,24 @@ import numpy as np
 from skimage.feature import hog
 from skimage import color, exposure
 
+def get_hog_features(img, orient, pix_per_cell, cell_per_block, 
+                     vis=False, feature_vec=True):
+    # Call with two outputs if vis==True
+    if vis == True:
+        features, hog_image = hog(img, orientations=orient, 
+                                  pixels_per_cell=(pix_per_cell, pix_per_cell),
+                                  cells_per_block=(cell_per_block, cell_per_block), 
+                                  transform_sqrt=False, 
+                                  visualise=vis, feature_vector=feature_vec)
+        return features, hog_image
+    # Otherwise call with one output
+    else:      
+        features = hog(img, orientations=orient, 
+                       pixels_per_cell=(pix_per_cell, pix_per_cell),
+                       cells_per_block=(cell_per_block, cell_per_block), 
+                       transform_sqrt=False,
+                       visualise=vis, feature_vector=feature_vec)
+        return features
 
 class Features:
         
@@ -26,29 +44,11 @@ class Features:
         # Return the feature vector
         return features
     
-    def get_hog_features(self, img, orient, pix_per_cell, cell_per_block, 
-                            vis=False, feature_vec=True):
-        # Call with two outputs if vis==True
-        if vis == True:
-            features, hog_image = hog(img, orientations=orient, 
-                                      pixels_per_cell=(pix_per_cell, pix_per_cell),
-                                      cells_per_block=(cell_per_block, cell_per_block), 
-                                      transform_sqrt=False, 
-                                      visualise=vis, feature_vector=feature_vec)
-            return features, hog_image
-        # Otherwise call with one output
-        else:      
-            features = hog(img, orientations=orient, 
-                           pixels_per_cell=(pix_per_cell, pix_per_cell),
-                           cells_per_block=(cell_per_block, cell_per_block), 
-                           transform_sqrt=False,
-                           visualise=vis, feature_vector=feature_vec)
-            return features
     
     # Define a function to extract features from a list of images
     # Have this function call bin_spatial() and color_hist()
-    def extract_features(self, imgs, color_space='RGB', spatial_size=(32, 32),
-                         spatial_feat = True, hist_bins=32, orient=9, 
+    def extract_features(self, imgs, color_space='YCrCb', spatial_size=(32, 32),
+                         spatial_feat = False, hist_bins=32, orient=9, 
                          pix_per_cell=8, cell_per_block=2, hog_channel='ALL'):
         # Create a list to append feature vectors to
         features = []
@@ -57,8 +57,13 @@ class Features:
         for file in imgs:
             # Read in each one by one
             image = mpimg.imread(file)
+            max_val = np.max(image)
+            # print("max_val " + str(max_val))
+            # scaled_img = (image/max_val)*255
+            scaled_img = (image/max_val)
+            
             features.append(self.extract_features_image(
-                image, color_space, spatial_size,
+                scaled_img, color_space, spatial_size,
                 spatial_feat, hist_bins, orient, 
                 pix_per_cell, cell_per_block, hog_channel))
         # Return list of feature vectors
@@ -68,8 +73,8 @@ class Features:
     
     # Define a function to extract features from a list of images
     # Have this function call bin_spatial() and color_hist()
-    def extract_features_image(self, image, color_space='RGB', spatial_size=(32, 32),
-                         spatial_feat = True, hist_bins=32, orient=9, 
+    def extract_features_image(self, image, color_space='YCrCb', spatial_size=(32, 32),
+                         spatial_feat = False, hist_bins=32, orient=9, 
                          pix_per_cell=8, cell_per_block=2, hog_channel='ALL'):
         file_features = []
         # apply color conversion if other than 'RGB'
@@ -96,13 +101,13 @@ class Features:
         if hog_channel == 'ALL':
             hog_features = []
             for channel in range(feature_image.shape[2]):
-                hog_features.append(self.get_hog_features(feature_image[:,:,channel], 
-                                                          orient, pix_per_cell, cell_per_block, 
-                                                          vis=False, feature_vec=True))
+                hog_features.append(get_hog_features(feature_image[:,:,channel], 
+                                                     orient, pix_per_cell, cell_per_block, 
+                                                     vis=False, feature_vec=True))
             hog_features = np.ravel(hog_features)        
         else:
-            hog_features = self.get_hog_features(feature_image[:,:,hog_channel], orient, 
-                                                 pix_per_cell, cell_per_block, vis=False, feature_vec=True)
+            hog_features = get_hog_features(feature_image[:,:,hog_channel], orient, 
+                                            pix_per_cell, cell_per_block, vis=False, feature_vec=True)
         # Append the new feature vector to the features list
         file_features.append(hog_features)
         return np.concatenate(file_features)        

@@ -52,21 +52,21 @@ def getWindows(img):
     # Large window over bottom half of image
     w = slide_window(img, x_start_stop=[None, None], 
                      y_start_stop=[np.int(image_length*0.5), image_length], 
-                     xy_window=(256, 256), xy_overlap=(0.9, 0.9))
+                     xy_window=(256, 256), xy_overlap=(0.75, 0.75))
     windows.append(w)
 #    print("l:", len(w))
 
     # Medium window over bottom half of image
     w = slide_window(img, x_start_stop=[None, None], 
                      y_start_stop=[np.int(image_length*0.5), np.int(image_length*0.85)], 
-                     xy_window=(128, 128), xy_overlap=(0.9, 0.9))
+                     xy_window=(128, 128), xy_overlap=(0.75, 0.75))
     windows.append(w)
 #    print("m:", len(w))
 
     # Large window over bottom half of image
     w = slide_window(img, x_start_stop=[None, None], 
                      y_start_stop=[np.int(image_length*0.5), np.int(image_length*0.70)], 
-                     xy_window=(64, 64), xy_overlap=(0.9, 0.9))
+                     xy_window=(64, 64), xy_overlap=(0.75, 0.75))
     windows.append(w)
 #    print("s:", len(w))
 
