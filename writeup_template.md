@@ -72,34 +72,21 @@ Train Accuracy of SVC =  1.0`
 ####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
 All the code for sliding window is in `pipeline.py`
-`
-    # Large window over bottom half of image
-    w = slide_window(img, x_start_stop=[None, None], 
-                     y_start_stop=[np.int(image_length*0.5), image_length], 
-                     xy_window=(256, 256), xy_overlap=(0.75, 0.75))
-    windows.append(w)
-#    print("l:", len(w))
+`Large window over bottom half of image`
+` w = slide_window(img, x_start_stop=[None, None],y_start_stop=[np.int(image_length*0.5), image_length],xy_window=(256, 256), xy_overlap=(0.75, 0.75))`
 
-    # Medium window over bottom half of image
-    w = slide_window(img, x_start_stop=[None, None], 
-                     y_start_stop=[np.int(image_length*0.5), np.int(image_length*0.85)], 
-                     xy_window=(128, 128), xy_overlap=(0.75, 0.75))
-    windows.append(w)
-#    print("m:", len(w))
+`Medium window over bottom half of image`
+`w = slide_window(img, x_start_stop=[None, None], y_start_stop=[np.int(image_length*0.5), np.int(image_length*0.85)], xy_window=(128, 128), xy_overlap=(0.75, 0.75))`
 
-    # Small window over bottom half of image
-    w = slide_window(img, x_start_stop=[None, None], 
-                     y_start_stop=[np.int(image_length*0.5), np.int(image_length*0.70)], 
-                     xy_window=(64, 64), xy_overlap=(0.75, 0.75))
-    windows.append(w)
-`
+`Small window over bottom half of image`
+w = slide_window(img, x_start_stop=[None, None], y_start_stop=[np.int(image_length*0.5), np.int(image_length*0.70)], xy_window=(64, 64), xy_overlap=(0.75, 0.75))`
 
 ![pipeline][image4]
 ![pipeline][image5]
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-See pipeline images above. It shows windows for vehicles based on classifier out before and after filtering for heat maps.
+See pipeline images above. It shows windows for vehicles based on pipeline before (classifier output) and after filtering for heat maps.
 
 ---
 
