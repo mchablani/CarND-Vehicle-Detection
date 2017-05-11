@@ -102,9 +102,8 @@ I am also tracking detectiosn in cars.py and for next frame I include the cars d
 
 ---
 
-###Discussion
+### Discussion
 
-####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
-
+One thing that worked for me was to use probability classifier and set a threshold for match to > 90% probabilty.  This only worked because the data used to train the classifier was of high quality.  This along with the fact that I setup overlap of 90% between sliding windows and setting threshold of 3 eliminated pretty much all false positives.  Another problem was missed detections. To overcome this tracking cars and displaying them even when are not detected with some tolerance before its retired.
