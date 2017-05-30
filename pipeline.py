@@ -172,12 +172,22 @@ def get_labeled_bboxes(labels):
     # Return the image
     return cars
 
+# Custom kernel to consolidate diagonally-touching areas
+diagKernel = [[1, 1, 1],
+              [1, 1, 1],
+              [1, 1, 1]]
+        
 # Define a single function that can extract features and make predictions
-def harden_detections(image, possible_cars):
+def harden_detections(image, possible_cars, expand_area=25):
+    cars, heatmap = harden_detections_with_heat_map(image, possible_cars, expand_area) 
+    return cars
+
+# Define a single function that can extract features and make predictions
+def harden_detections_with_heat_map(image, possible_cars, expand_area=25):
     heat = np.zeros_like(image[:,:,0]).astype(np.float)
 
     # Add heat to each box in box list
-    heat = add_heat(heat, possible_cars)
+    heat = add_heat(heat, possible_cars, expand_area)
 
     # Apply threshold to help remove false positives
     heat = apply_threshold(heat, HEATMAP_THRESHOLD)
@@ -186,10 +196,10 @@ def harden_detections(image, possible_cars):
     heatmap = np.clip(heat, 0, 255)
 
     # Find final boxes from heatmap using label function
-    labels = label(heatmap)
+    labels = label(heatmap, structure=diagKernel)
     
     print("Labels:", labels[1])
 
     cars = get_labeled_bboxes(labels)
     
-    return cars
+    return cars, heatmap
